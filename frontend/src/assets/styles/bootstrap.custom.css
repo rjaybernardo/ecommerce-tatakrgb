@@ -4068,7 +4068,9 @@ fieldset:disabled .btn {
 .navbar-brand:focus {
   color: var(--bs-navbar-brand-hover-color);
 }
-
+.navbar-brand img{
+  margin-right: 5px;
+}
 .navbar-nav {
   --bs-nav-link-padding-x: 0;
   --bs-nav-link-padding-y: 0.5rem;
