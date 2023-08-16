@@ -3,7 +3,7 @@ const products = [
     name: 'Leather Catch Bag',
     image: '/images/catch_bag.png',
     description:
-      'Bluetooth technology lets you connect it with compatible devices wirelessly High-quality AAC audio offers immersive listening experience Built-in microphone allows you to take calls while working',
+      'Introducing our premium Leather Training Catch Bag, specially designed for rooster conditioning. Constructed with top-quality leather. Whether you"re practicing agility, conditioning, our catch bag offers a secure grip and hassle-free maneuverability. Elevate your rooster training sessions with confidence and style – order now and experience the difference firsthand.',
     brand: 'RGB LeatherCrafts',
     category: 'Rooster Training',
     price: 2500.0,
@@ -15,31 +15,31 @@ const products = [
     name: 'Leather Dummy Rooster',
     image: '/images/leather_dummy.png',
     description:
-      'Introducing the iPhone 13 Pro. A transformative triple-camera system that adds tons of capability without complexity. An unprecedented leap in battery life',
+      'Introducing our Leather Dummy Rooster – the perfect training companion. Made from premium leather, this lifelike dummy replicates the weight and texture of a real rooster. Enhance your training sessions with authenticity and durability. Train smarter, train better – get your Leather Dummy Rooster now.',
     brand: 'RGB LeatherCrafts',
     category: 'Rooster Training',
     price: 2700.0,
     countInStock: 7,
-    rating: 4.0,
+    rating: 5.0,
     numReviews: 8,
   },
   {
     name: 'Leather Takera',
     image: '/images/takera.png',
     description:
-      'Characterized by versatile imaging specs, the Canon EOS 80D further clarifies itself using a pair of robust focusing systems and an intuitive design',
+      'Introducing the Leather Takera – the ultimate multi-sheath solution for your tari blade. Expertly crafted for durability and convenience, it offers easy and secure storage. Elevate your tari blade experience with the Leather Takera.',
     brand: 'RGB LeatherCrafts',
     category: 'Gaff Accessories',
     price: 6000.0,
     countInStock: 5,
-    rating: 3,
+    rating: 4.5,
     numReviews: 12,
   },
   {
     name: 'Leather Tari Sheath',
     image: '/images/tari_sheath.png',
     description:
-      'The ultimate home entertainment center starts with PlayStation. Whether you are into gaming, HD movies, television, music',
+      'Introducing our Leather Tari Sheath: the epitome of style and protection. Meticulously designed to secure your tari blade, it adds both elegance and functionality to your ensemble. Elevate your tari with our premium leather sheath today.',
     brand: 'RGB LeatherCrafts',
     category: 'Gaff Accessories',
     price: 150.0,
@@ -51,7 +51,7 @@ const products = [
     name: 'Leather FDick Case',
     image: '/images/fdick_case.png',
     description:
-      'Get a better handle on your games with this Logitech LIGHTSYNC gaming mouse. The six programmable buttons allow customization for a smooth playing experience',
+      'Elevate your sharpening tools with our Leather Case for F. Dick Sharpener. Precision-engineered for a perfect fit, this case offers protection and convenience. Upgrade your sharpening experience today.',
     brand: 'RGB LeatherCrafts',
     category: 'Gaff Accessories',
     price: 399.0,
@@ -63,7 +63,7 @@ const products = [
     name: 'Leather Tari Case',
     image: '/images/tari_case.png',
     description:
-      'Meet Echo Dot - Our most popular smart speaker with a fabric design. It is our most compact smart speaker that fits perfectly into small space',
+      'Introducing the Leather Tari Case – Your Gaffing Gear Haven. Purpose-designed to house gaffing essentials and tari blades, this case combines organization and sophistication. Elevate your gaffing setup with the elegance of Leather Tari Case.',
     brand: 'RGB LeatherCrafts',
     category: 'Gaff Accessories',
     price: 8000.0,
@@ -75,7 +75,7 @@ const products = [
     name: 'Leather Arm Protector',
     image: '/images/arm_protector.png',
     description:
-      'Meet Echo Dot - Our most popular smart speaker with a fabric design. It is our most compact smart speaker that fits perfectly into small space',
+      'Introducing our Leather Arm Protector for Cock Fighting Referees. Tailored for safety and comfort, this protector ensures a secure shield during intense matches. Elevate your refereeing experience with confidence.',
     brand: 'RGB LeatherCrafts',
     category: 'Gaff Accessories',
     price: 600.0,
