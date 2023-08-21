@@ -11,9 +11,11 @@ const Meta = ({ title, description, keywords }) => {
 };
 
 Meta.defaultProps = {
-  title: 'Welcome To ProShop',
-  description: 'We sell the best products for cheap',
-  keywords: 'electronics, buy electronics, cheap electroincs',
+  title: 'Welcome To Tatak RGB',
+  description:
+    'We sell the best leather made gamefowl products and accessories',
+  keywords:
+    'gamefowl, sabong, gaffing, cockfight, cockfighting, tupada, sultada, rooster, rooster conditioning',
 };
 
 export default Meta;
