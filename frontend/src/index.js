@@ -32,6 +32,7 @@ import UserEditScreen from './screens/admin/UserEditScreen';
 import store from './store';
 import { Provider } from 'react-redux';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
+import MetaPixel from './utils/metaPixel.js';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -76,6 +77,7 @@ root.render(
   <React.StrictMode>
     <HelmetProvider>
       <Provider store={store}>
+        <MetaPixel />
         <PayPalScriptProvider deferLoading={true}>
           <RouterProvider router={router} />
         </PayPalScriptProvider>
