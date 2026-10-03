@@ -1,5 +1,5 @@
-import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button } from 'react-bootstrap';
+import { Link } from 'react-router';
 import { FaTimes } from 'react-icons/fa';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
@@ -52,11 +52,14 @@ const OrderListScreen = () => {
                   )}
                 </td>
                 <td>
-                  <LinkContainer to={`/order/${order._id}`}>
-                    <Button variant='light' className='btn-sm'>
-                      Details
-                    </Button>
-                  </LinkContainer>
+                  <Button
+                    as={Link}
+                    to={`/order/${order._id}`}
+                    variant='light'
+                    className='btn-sm'
+                  >
+                    Details
+                  </Button>
                 </td>
               </tr>
             ))}

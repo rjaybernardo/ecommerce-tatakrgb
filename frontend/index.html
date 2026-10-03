@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f8f5f3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#151110" media="(prefers-color-scheme: dark)" />
+    <meta
+      name="description"
+      content="Handcrafted leather gamefowl products and accessories from RGB LeatherCrafts."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="RGB LeatherCrafts" />
+    <meta property="og:title" content="Welcome To Tatak RGB!" />
+    <meta
+      property="og:description"
+      content="Handcrafted leather gamefowl products and accessories from RGB LeatherCrafts."
+    />
+    <meta property="og:image" content="/images/catch_bag.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Figtree:wght@400..700&display=swap"
+    />
+    <script>
+      // Apply the saved or system theme before first paint to avoid a flash.
+      (function () {
+        var theme;
+        try {
+          theme = localStorage.getItem('theme');
+        } catch (e) {}
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+        }
+        document.documentElement.setAttribute('data-bs-theme', theme);
+      })();
+    </script>
+    <!-- Meta Pixel -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '1026677321684540');
+      fbq('track', 'PageView');
+    </script>
+    <title>Welcome To Tatak RGB!</title>
+  </head>
+  <body>
+    <noscript>
+      <img height="1" width="1" style="display: none" alt=""
+        src="https://www.facebook.com/tr?id=1026677321684540&ev=PageView&noscript=1" />
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

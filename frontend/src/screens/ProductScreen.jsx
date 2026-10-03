@@ -1,26 +1,61 @@
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Row,
-  Col,
-  Image,
-  ListGroup,
-  Card,
-  Button,
-  Form,
-} from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
+import { Helmet } from 'react-helmet-async';
+import { FaArrowLeft } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import {
   useGetProductDetailsQuery,
   useCreateReviewMutation,
 } from '../slices/productsApiSlice';
 import Rating from '../components/Rating';
+import StockChip from '../components/StockChip';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Meta from '../components/Meta';
 import { addToCart } from '../slices/cartSlice';
+import { formatPrice } from '../utils/format';
+
+const formatReviewDate = (iso) =>
+  new Date(iso).toLocaleDateString('en-PH', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+
+const ProductJsonLd = ({ product }) => {
+  const data = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    image: new URL(product.image, window.location.origin).href,
+    description: product.description,
+    brand: { '@type': 'Brand', name: product.brand },
+    category: product.category,
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'PHP',
+      price: product.price,
+      availability:
+        product.countInStock > 0
+          ? 'https://schema.org/InStock'
+          : 'https://schema.org/OutOfStock',
+    },
+  };
+  if (product.numReviews > 0) {
+    data.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: product.rating,
+      reviewCount: product.numReviews,
+    };
+  }
+  return (
+    <Helmet>
+      <script type='application/ld+json'>{JSON.stringify(data)}</script>
+    </Helmet>
+  );
+};
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
@@ -29,7 +64,7 @@ const ProductScreen = () => {
   const navigate = useNavigate();
 
   const [qty, setQty] = useState(1);
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState('');
   const [comment, setComment] = useState('');
 
   const addToCartHandler = () => {
@@ -55,10 +90,12 @@ const ProductScreen = () => {
     try {
       await createReview({
         productId,
-        rating,
+        rating: Number(rating),
         comment,
       }).unwrap();
       refetch();
+      setRating('');
+      setComment('');
       toast.success('Review created successfully');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
@@ -67,8 +104,8 @@ const ProductScreen = () => {
 
   return (
     <>
-      <Link className='btn btn-light my-3' to='/'>
-        Go Back
+      <Link className='back-link' to='/'>
+        <FaArrowLeft aria-hidden='true' /> Back to shop
       </Link>
       {isLoading ? (
         <Loader />
@@ -78,149 +115,147 @@ const ProductScreen = () => {
         </Message>
       ) : (
         <>
-          <Meta title={product.name} description={product.description} />
-          <Row>
-            <Col md={6}>
-              <Image src={product.image} alt={product.name} fluid />
-            </Col>
-            <Col md={3}>
-              <ListGroup variant='flush'>
-                <ListGroup.Item>
-                  <h3>{product.name}</h3>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Rating
-                    value={product.rating}
-                    text={`${product.numReviews} reviews`}
-                  />
-                </ListGroup.Item>
-                <ListGroup.Item>Price: ₱{product.price}</ListGroup.Item>
-                <ListGroup.Item>
-                  Description: {product.description}
-                </ListGroup.Item>
-              </ListGroup>
-            </Col>
-            <Col md={3}>
-              <Card>
-                <ListGroup variant='flush'>
-                  <ListGroup.Item>
-                    <Row>
-                      <Col>Price:</Col>
-                      <Col>
-                        <strong>₱{product.price}</strong>
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
-                  <ListGroup.Item>
-                    <Row>
-                      <Col>Status:</Col>
-                      <Col>
-                        {product.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
+          <Meta
+            title={product.name}
+            description={product.description}
+            image={product.image}
+          />
+          <ProductJsonLd product={product} />
 
-                  {/* Qty Select */}
+          <div className='pdp'>
+            <div className='pdp__media'>
+              <img
+                src={product.image}
+                alt={product.name}
+                width='640'
+                height='510'
+              />
+            </div>
+
+            <div className='pdp__info'>
+              <span className='eyebrow'>{product.category}</span>
+              <h1>{product.name}</h1>
+              <a href='#reviews' className='text-decoration-none'>
+                <Rating
+                  value={product.rating}
+                  text={`${product.numReviews} reviews`}
+                />
+              </a>
+              <p className='price pdp__price'>{formatPrice(product.price)}</p>
+              <p className='pdp__desc'>{product.description}</p>
+
+              <div className='buy-box'>
+                <div className='buy-box__row'>
+                  <StockChip countInStock={product.countInStock} />
                   {product.countInStock > 0 && (
-                    <ListGroup.Item>
-                      <Row>
-                        <Col>Qty</Col>
-                        <Col>
-                          <Form.Control
-                            as='select'
-                            value={qty}
-                            onChange={(e) => setQty(Number(e.target.value))}
-                          >
-                            {[...Array(product.countInStock).keys()].map(
-                              (x) => (
-                                <option key={x + 1} value={x + 1}>
-                                  {x + 1}
-                                </option>
-                              )
-                            )}
-                          </Form.Control>
-                        </Col>
-                      </Row>
-                    </ListGroup.Item>
-                  )}
-
-                  <ListGroup.Item>
-                    <Button
-                      className='btn-block'
-                      type='button'
-                      disabled={product.countInStock === 0}
-                      onClick={addToCartHandler}
+                    <Form.Group
+                      controlId='qty'
+                      className='d-flex align-items-center gap-2'
                     >
-                      Add To Cart
-                    </Button>
-                  </ListGroup.Item>
-                </ListGroup>
-              </Card>
-            </Col>
-          </Row>
-          <Row className='review'>
-            <Col md={6}>
-              <h2>Reviews</h2>
-              {product.reviews.length === 0 && <Message>No Reviews</Message>}
-              <ListGroup variant='flush'>
-                {product.reviews.map((review) => (
-                  <ListGroup.Item key={review._id}>
-                    <strong>{review.name}</strong>
-                    <Rating value={review.rating} />
-                    <p>{review.createdAt.substring(0, 10)}</p>
-                    <p>{review.comment}</p>
-                  </ListGroup.Item>
-                ))}
-                <ListGroup.Item>
-                  <h2>Write a Customer Review</h2>
-
-                  {loadingProductReview && <Loader />}
-
-                  {userInfo ? (
-                    <Form onSubmit={submitHandler}>
-                      <Form.Group className='my-2' controlId='rating'>
-                        <Form.Label>Rating</Form.Label>
-                        <Form.Control
-                          as='select'
-                          required
-                          value={rating}
-                          onChange={(e) => setRating(e.target.value)}
-                        >
-                          <option value=''>Select...</option>
-                          <option value='1'>1 - Poor</option>
-                          <option value='2'>2 - Fair</option>
-                          <option value='3'>3 - Good</option>
-                          <option value='4'>4 - Very Good</option>
-                          <option value='5'>5 - Excellent</option>
-                        </Form.Control>
-                      </Form.Group>
-                      <Form.Group className='my-2' controlId='comment'>
-                        <Form.Label>Comment</Form.Label>
-                        <Form.Control
-                          as='textarea'
-                          row='3'
-                          required
-                          value={comment}
-                          onChange={(e) => setComment(e.target.value)}
-                        ></Form.Control>
-                      </Form.Group>
-                      <Button
-                        disabled={loadingProductReview}
-                        type='submit'
-                        variant='primary'
+                      <Form.Label className='mb-0'>Qty</Form.Label>
+                      <Form.Select
+                        value={qty}
+                        onChange={(e) => setQty(Number(e.target.value))}
                       >
-                        Submit
-                      </Button>
-                    </Form>
-                  ) : (
-                    <Message>
-                      Please <Link to='/login'>sign in</Link> to write a review
-                    </Message>
+                        {[...Array(product.countInStock).keys()].map((x) => (
+                          <option key={x + 1} value={x + 1}>
+                            {x + 1}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </Form.Group>
                   )}
-                </ListGroup.Item>
-              </ListGroup>
-            </Col>
-          </Row>
+                </div>
+                <Button
+                  className='w-100'
+                  size='lg'
+                  type='button'
+                  disabled={product.countInStock === 0}
+                  onClick={addToCartHandler}
+                >
+                  {product.countInStock === 0
+                    ? 'Sold out'
+                    : `Add to cart · ${formatPrice(product.price * qty)}`}
+                </Button>
+              </div>
+
+              <dl className='spec-list'>
+                <dt>Brand</dt>
+                <dd>{product.brand}</dd>
+                <dt>Category</dt>
+                <dd>{product.category}</dd>
+              </dl>
+            </div>
+          </div>
+
+          <section id='reviews' className='reviews' aria-labelledby='reviews-title'>
+            <div>
+              <h2 id='reviews-title'>Reviews</h2>
+              {product.reviews.length === 0 ? (
+                <Message>No reviews yet. Be the first to share one.</Message>
+              ) : (
+                product.reviews.map((review) => (
+                  <article key={review._id} className='review-item'>
+                    <div className='review-item__head'>
+                      <strong>{review.name}</strong>
+                      <time dateTime={review.createdAt}>
+                        {formatReviewDate(review.createdAt)}
+                      </time>
+                    </div>
+                    <Rating value={review.rating} />
+                    <p>{review.comment}</p>
+                  </article>
+                ))
+              )}
+            </div>
+
+            <div className='review-form'>
+              <h2>Write a review</h2>
+
+              {loadingProductReview && <Loader />}
+
+              {userInfo ? (
+                <Form onSubmit={submitHandler}>
+                  <Form.Group className='my-3' controlId='rating'>
+                    <Form.Label>Rating</Form.Label>
+                    <Form.Select
+                      required
+                      value={rating}
+                      onChange={(e) => setRating(e.target.value)}
+                    >
+                      <option value=''>Select…</option>
+                      <option value='1'>1 - Poor</option>
+                      <option value='2'>2 - Fair</option>
+                      <option value='3'>3 - Good</option>
+                      <option value='4'>4 - Very Good</option>
+                      <option value='5'>5 - Excellent</option>
+                    </Form.Select>
+                  </Form.Group>
+                  <Form.Group className='my-3' controlId='comment'>
+                    <Form.Label>Comment</Form.Label>
+                    <Form.Control
+                      as='textarea'
+                      rows={4}
+                      required
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Button
+                    disabled={loadingProductReview}
+                    type='submit'
+                    variant='primary'
+                  >
+                    Submit review
+                  </Button>
+                </Form>
+              ) : (
+                <Message>
+                  Please <Link to='/login'>sign in</Link> to write a review
+                </Message>
+              )}
+            </div>
+          </section>
         </>
       )}
     </>

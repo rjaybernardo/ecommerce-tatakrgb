@@ -24,5 +24,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 frontend/build
+frontend/dist
 uploads/*png
 uploads/*jpg
