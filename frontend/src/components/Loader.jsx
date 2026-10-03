@@ -6,12 +6,14 @@ const Loader = () => {
       animation='border'
       role='status'
       style={{
-        width: '100px',
-        height: '100px',
-        margin: 'auto',
+        width: '3.5rem',
+        height: '3.5rem',
+        margin: '2rem auto',
         display: 'block',
       }}
-    ></Spinner>
+    >
+      <span className='visually-hidden'>Loading…</span>
+    </Spinner>
   );
 };
 

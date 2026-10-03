@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import ReactDOM from 'react-dom/client';
-import './assets/styles/bootstrap.custom.css';
-import './assets/styles/index.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './assets/styles/theme.css';
 import App from './App';
 import {
   createBrowserRouter,
@@ -18,20 +17,26 @@ import ProductScreen from './screens/ProductScreen';
 import CartScreen from './screens/CartScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
-import ShippingScreen from './screens/ShippingScreen';
-import PaymentScreen from './screens/PaymentScreen';
-import PlaceOrderScreen from './screens/PlaceOrderScreen';
-import OrderScreen from './screens/OrderScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import OrderListScreen from './screens/admin/OrderListScreen';
-import ProductListScreen from './screens/admin/ProductListScreen';
-import ProductEditScreen from './screens/admin/ProductEditScreen';
-import UserListScreen from './screens/admin/UserListScreen';
-import UserEditScreen from './screens/admin/UserEditScreen';
 import store from './store';
 import { Provider } from 'react-redux';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
-import MetaPixel from './utils/metaPixel';
+
+// Checkout, account and admin screens are split into their own chunks so
+// shoppers browsing the catalog don't download PayPal or admin code up front.
+const ShippingScreen = lazy(() => import('./screens/ShippingScreen'));
+const PaymentScreen = lazy(() => import('./screens/PaymentScreen'));
+const PlaceOrderScreen = lazy(() => import('./screens/PlaceOrderScreen'));
+const OrderScreen = lazy(() => import('./screens/OrderScreen'));
+const ProfileScreen = lazy(() => import('./screens/ProfileScreen'));
+const OrderListScreen = lazy(() => import('./screens/admin/OrderListScreen'));
+const ProductListScreen = lazy(() =>
+  import('./screens/admin/ProductListScreen')
+);
+const ProductEditScreen = lazy(() =>
+  import('./screens/admin/ProductEditScreen')
+);
+const UserListScreen = lazy(() => import('./screens/admin/UserListScreen'));
+const UserEditScreen = lazy(() => import('./screens/admin/UserEditScreen'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -76,7 +81,6 @@ root.render(
   <React.StrictMode>
     <HelmetProvider>
       <Provider store={store}>
-        <MetaPixel />
         <PayPalScriptProvider deferLoading={true}>
           <RouterProvider router={router} />
         </PayPalScriptProvider>

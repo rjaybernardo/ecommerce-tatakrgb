@@ -12,6 +12,7 @@ import {
 import { FaTrash } from 'react-icons/fa';
 import Message from '../components/Message';
 import { addToCart, removeFromCart } from '../slices/cartSlice';
+import { formatPrice } from '../utils/format';
 
 const CartScreen = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const CartScreen = () => {
   return (
     <Row>
       <Col md={8}>
-        <h1 style={{ marginBottom: '20px' }}>Shopping Cart</h1>
+        <h1 className='mb-4'>Shopping Cart</h1>
         {cartItems.length === 0 ? (
           <Message>
             Your cart is empty <Link to='/'>Go Back</Link>
@@ -53,10 +54,9 @@ const CartScreen = () => {
                   <Col md={3}>
                     <Link to={`/product/${item._id}`}>{item.name}</Link>
                   </Col>
-                  <Col md={2}>₱{item.price}</Col>
+                  <Col md={2} className='price'>{formatPrice(item.price)}</Col>
                   <Col md={2}>
-                    <Form.Control
-                      as='select'
+                    <Form.Select
                       value={item.qty}
                       onChange={(e) =>
                         addToCartHandler(item, Number(e.target.value))
@@ -67,7 +67,7 @@ const CartScreen = () => {
                           {x + 1}
                         </option>
                       ))}
-                    </Form.Control>
+                    </Form.Select>
                   </Col>
                   <Col md={2}>
                     <Button
@@ -88,19 +88,20 @@ const CartScreen = () => {
         <Card>
           <ListGroup variant='flush'>
             <ListGroup.Item>
-              <h2>
+              <h2 className='h5'>
                 Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
                 items
               </h2>
-              ₱
-              {cartItems
-                .reduce((acc, item) => acc + item.qty * item.price, 0)
-                .toFixed(2)}
+              <span className='price fs-3'>
+                {formatPrice(
+                  cartItems.reduce((acc, item) => acc + item.qty * item.price, 0)
+                )}
+              </span>
             </ListGroup.Item>
             <ListGroup.Item>
               <Button
                 type='button'
-                className='btn-block'
+                className='w-100'
                 disabled={cartItems.length === 0}
                 onClick={checkoutHandler}
               >

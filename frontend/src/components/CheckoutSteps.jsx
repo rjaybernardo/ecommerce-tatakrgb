@@ -1,50 +1,30 @@
-import React from 'react';
 import { NavLink } from 'react-router';
 import { Nav } from 'react-bootstrap';
 
+const STEPS = [
+  { label: 'Sign In', to: '/login' },
+  { label: 'Shipping', to: '/shipping' },
+  { label: 'Payment', to: '/payment' },
+  { label: 'Place Order', to: '/placeorder' },
+];
+
 const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
+  const reached = [step1, step2, step3, step4];
+
   return (
-    <Nav className='justify-content-center mb-4'>
-      <Nav.Item>
-        {step1 ? (
-          <Nav.Link as={NavLink} to='/login'>
-            Sign In
-          </Nav.Link>
-        ) : (
-          <Nav.Link disabled>Sign In</Nav.Link>
-        )}
-      </Nav.Item>
-
-      <Nav.Item>
-        {step2 ? (
-          <Nav.Link as={NavLink} to='/shipping'>
-            Shipping
-          </Nav.Link>
-        ) : (
-          <Nav.Link disabled>Shipping</Nav.Link>
-        )}
-      </Nav.Item>
-
-      <Nav.Item>
-        {step3 ? (
-          <Nav.Link as={NavLink} to='/payment'>
-            Payment
-          </Nav.Link>
-        ) : (
-          <Nav.Link disabled>Payment</Nav.Link>
-        )}
-      </Nav.Item>
-
-      <Nav.Item>
-        {step4 ? (
-          <Nav.Link as={NavLink} to='/placeorder'>
-            Place Order
-          </Nav.Link>
-        ) : (
-          <Nav.Link disabled>Place Order</Nav.Link>
-        )}
-      </Nav.Item>
-    </Nav>
+    <ol className='checkout-steps' aria-label='Checkout progress'>
+      {STEPS.map((step, i) => (
+        <li key={step.to}>
+          {reached[i] ? (
+            <Nav.Link as={NavLink} to={step.to}>
+              {step.label}
+            </Nav.Link>
+          ) : (
+            <Nav.Link disabled>{step.label}</Nav.Link>
+          )}
+        </li>
+      ))}
+    </ol>
   );
 };
 

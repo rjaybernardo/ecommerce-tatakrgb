@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
-import { useParams } from 'react-router';
-import { useNavigate } from 'react-router';
+import { useState } from 'react';
+import { Form } from 'react-bootstrap';
+import { useParams, useNavigate } from 'react-router';
+import { FaSearch } from 'react-icons/fa';
 
 const SearchBox = () => {
   const navigate = useNavigate();
@@ -12,8 +12,8 @@ const SearchBox = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (keyword) {
-      navigate(`/search/${keyword.trim()}`);
+    if (keyword.trim()) {
+      navigate(`/search/${encodeURIComponent(keyword.trim())}`);
       setKeyword('');
     } else {
       navigate('/');
@@ -21,18 +21,16 @@ const SearchBox = () => {
   };
 
   return (
-    <Form onSubmit={submitHandler} className='d-flex'>
+    <Form onSubmit={submitHandler} className='search-box' role='search'>
+      <FaSearch aria-hidden='true' size={14} />
       <Form.Control
-        type='text'
+        type='search'
         name='q'
         onChange={(e) => setKeyword(e.target.value)}
         value={keyword}
-        placeholder='Search Products...'
-        className='mr-sm-2 ml-sm-5'
-      ></Form.Control>
-      <Button type='submit' variant='outline-success' className='p-2 mx-2'>
-        Search
-      </Button>
+        placeholder='Search leather goods…'
+        aria-label='Search products'
+      />
     </Form>
   );
 };

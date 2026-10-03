@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Container } from 'react-bootstrap';
 import { Outlet } from 'react-router';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Loader from './components/Loader';
 import { logout } from './slices/authSlice';
 
 import { ToastContainer } from 'react-toastify';
@@ -26,9 +27,11 @@ const App = () => {
     <>
       <ToastContainer />
       <Header />
-      <main className='py-3'>
+      <main className='py-4'>
         <Container>
-          <Outlet />
+          <Suspense fallback={<Loader />}>
+            <Outlet />
+          </Suspense>
         </Container>
       </main>
       <Footer />
