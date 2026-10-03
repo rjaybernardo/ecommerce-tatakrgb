@@ -4,13 +4,12 @@ import './assets/styles/bootstrap.custom.css';
 import './assets/styles/index.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-  RouterProvider,
-} from 'react-router-dom';
+} from 'react-router';
+import { RouterProvider } from 'react-router/dom';
 import { HelmetProvider } from 'react-helmet-async';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
@@ -32,7 +31,7 @@ import UserEditScreen from './screens/admin/UserEditScreen';
 import store from './store';
 import { Provider } from 'react-redux';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
-import MetaPixel from './utils/metaPixel.js';
+import MetaPixel from './utils/metaPixel';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -85,5 +84,3 @@ root.render(
     </HelmetProvider>
   </React.StrictMode>
 );
-
-reportWebVitals();
